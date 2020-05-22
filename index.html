@@ -34,12 +34,22 @@
             <div class="row jumbotron jumbotron-fluid">
                 <div class="oneDayForcast ">
                     <h1 class="display-4">Day Forecast</h1>
+                    <div class="city"> City</div>
+                    <div class="wind"> Wind</div>
+                    <div class="humidity"> Humidity</div>
+                    <div class="temp"> Temp</div>
+                    <div class="UVindex"> UVindex</div>
                 </div>
             </div>
             <div class="row">
                 <div class="fiveDayForcast">
                     <h2 class="display-4">5 Day Forecast</h2>
-
+                    <div class="icon">
+                        <canvas id="icon" width="128" height="128"></canvas>
+                    </div>
+                    <div class=description>
+                        <p id="desc"></p>
+                    </div>
                 </div>
             </div>
         </div>
