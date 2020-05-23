@@ -17,13 +17,29 @@ let city = ["Austin", "Houston", "Dallas", "San Marcos"];
 // 	apiKey +
 // 	"'&q='Austin'";
 
-let city = "Houston";
 const apiKey = "c3be44ab7db984ed86cde2a02725a631";
 let weatherurl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+// find the id and create a for loop for the button to find city and append on the empty div
+let createButton = function () {
+	for (let i = 0; i < city.length; i++) {
+		let cityName = $("<button></button>")
+			.addClass("searchWeather btn btn-dark btn-block")
+			.text(city[i])
+			.val(city[i]);
+		$("#cities").append(cityName);
+	}
+};
 
-let getWeather = function () {
+$(".searchWeather").click(function () {
+	let x = $(this).val();
+	console.log(x);
+	getWeather(x);
+});
+
+let getWeather = function (city) {
+	createButton();
 	$.ajax({
-		url: weatherurl,
+		url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`,
 		method: "GET",
 	}).then(function (res) {
 		console.log(res);
@@ -31,12 +47,3 @@ let getWeather = function () {
 	});
 };
 getWeather();
-
-let createButton = function () {
-	for (let i = 0; i < city.length; i++) {
-		let city = $("<button></button>")
-			.addClass("searchWeather btn btn-dark btn-block")
-			.text(city[i])
-			.val(i);
-	}
-};
