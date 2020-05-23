@@ -17,7 +17,7 @@ let city = ["Austin", "Houston", "Dallas", "San Marcos"];
 // 	apiKey +
 // 	"'&q='Austin'";
 
-const apiKey = "c3be44ab7db984ed86cde2a02725a631";
+const apiKey = "f7beb73a262bbf898ba7bef91aaf85e4";
 let weatherurl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 // find the id and create a for loop for the button to find city and append on the empty div
 let createButton = function () {
