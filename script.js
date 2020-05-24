@@ -1,5 +1,5 @@
 // // set variables for the one day Forecast to get city info on page
-// let dayOneForcast = "oneDayForcast";
+let dayOneForcast = "oneDayForcast";
 const oneDayCity = $(".city");
 const oneDayWind = $(".wind");
 const oneDayHumidity = $(".humidity");
@@ -36,7 +36,7 @@ $(".searchWeather").click(function () {
 	getWeather(x);
 });
 
-let getWeather = function (city) {
+let getWeather = function () {
 	createButton();
 	$.ajax({
 		url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`,
@@ -44,6 +44,10 @@ let getWeather = function (city) {
 	}).then(function (res) {
 		console.log(res);
 		oneDayCity.text(res.name);
+		oneDayWind.text(res.wind);
+		oneDayHumidity.text(res.main.humidity);
+		oneDayTemp.text(res);
+		oneDayUvindex.text(res);
 	});
 };
 getWeather();
