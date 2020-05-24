@@ -5,7 +5,9 @@ const oneDayWind = $(".wind");
 const oneDayHumidity = $(".humidity");
 const oneDayTemp = $(".temp");
 const oneDayUvindex = $(".UVindex");
-
+const oneDayWeather = $(".weather");
+const oneDayLatitude = $(".lat");
+const oneDayLongitude = $(".lon");
 // // set an array for the cities to display a list of the cities
 
 let city = ["Austin", "Houston", "Dallas", "San Marcos"];
@@ -44,10 +46,19 @@ let getWeather = function () {
 	}).then(function (res) {
 		console.log(res);
 		oneDayCity.text(res.name);
-		oneDayWind.text(res.wind);
+		oneDayWind.text(res.wind.speed);
 		oneDayHumidity.text(res.main.humidity);
-		oneDayTemp.text(res);
+		oneDayTemp.text(res.main.temp);
 		oneDayUvindex.text(res);
+		oneDayWeather.text(res.weather[0].description);
+		oneDayLatitude.text(res.coord.lat);
+		oneDayLongitude.text(res.coord.lon);
+	});
+	$.ajax({
+		url: `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${oneDayLatitude}&lon=${oneDayLongitude}`,
+		method: "GET",
+	}).then(function (res) {
+		console.log(res);
 	});
 };
 getWeather();
