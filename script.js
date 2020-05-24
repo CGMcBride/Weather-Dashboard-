@@ -31,28 +31,32 @@ let createButton = function () {
 		$("#cities").append(cityName);
 	}
 };
+createButton();
 
-$(".searchWeather").click(function () {
+$(document).on("click", ".searchWeather", function () {
 	let x = $(this).val();
 	console.log(x);
 	getWeather(x);
 });
 
-let getWeather = function () {
-	createButton();
+let getWeather = function (x) {
 	$.ajax({
-		url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`,
+		url:
+			"http://api.openweathermap.org/data/2.5/weather?q=" +
+			x +
+			"&appid=" +
+			apiKey,
 		method: "GET",
 	}).then(function (res) {
 		console.log(res);
-		oneDayCity.text(res.name);
-		oneDayWind.text(res.wind.speed);
-		oneDayHumidity.text(res.main.humidity);
-		oneDayTemp.text(res.main.temp);
-		oneDayUvindex.text(res);
-		oneDayWeather.text(res.weather[0].description);
-		oneDayLatitude.text(res.coord.lat);
-		oneDayLongitude.text(res.coord.lon);
+		oneDayCity.text(res.name).addClass("text-danger");
+		oneDayWind.text("Wind: " + res.wind.speed);
+		oneDayHumidity.text("Humidity: " + res.main.humidity);
+		oneDayTemp.text("Current Temprature: " + res.main.temp);
+		oneDayUvindex.text("UV Index");
+		oneDayWeather.text("Weather: " + res.weather[0].description);
+		oneDayLatitude.text("Latitude: " + res.coord.lat);
+		oneDayLongitude.text("Longitude:" + res.coord.lon);
 	});
 	$.ajax({
 		url: `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${oneDayLatitude}&lon=${oneDayLongitude}`,
