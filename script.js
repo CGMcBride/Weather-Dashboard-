@@ -102,6 +102,26 @@ let getWeather = function (x) {
 		method: "GET",
 	}).then(function (res) {
 		console.log(res);
+		console.log(res.list[0].dt_txt);
+
+		let a = $("<div></div>");
+		let b = $("<p></p>").text(res.list[0].dt_txt);
+		let c = $("<img />").attr(
+			"src",
+			"http://openweathermap.org/img/w/" + res.list[0].weather[0].icon + ".png"
+		);
+		let d = $("<p></p>").text(
+			Math.round((res.list[0].main.temp - 273.17) * 1.8 + 32)
+		);
+		let e = $("<p></p>").text(res.list[0].main.humidity);
+		a.append(b);
+		a.append(c);
+		a.append(d);
+		a.append(e);
+		fiveDay.append(a);
+		console.log(a);
+
+		let f = [0, 8, 16, 24, 32];
 	});
 };
 getWeather();
