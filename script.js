@@ -8,6 +8,8 @@ const oneDayUvindex = $(".UVindex");
 const oneDayWeather = $(".weather");
 const oneDayLatitude = $(".lat");
 const oneDayLongitude = $(".lon");
+// set variables for the search button
+const searchButton = $("#search");
 // // set an array for the cities to display a list of the cities
 
 let city = ["Austin", "Houston", "Dallas", "San Marcos"];
@@ -21,6 +23,10 @@ let city = ["Austin", "Houston", "Dallas", "San Marcos"];
 
 const apiKey = "f7beb73a262bbf898ba7bef91aaf85e4";
 let weatherurl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+// call for the search button to activate the function to search other cities
+$(document).on("click", "#search", function () {
+	console.log("this will work");
+});
 // find the id and create a for loop for the button to find city and append on the empty div
 let createButton = function () {
 	for (let i = 0; i < city.length; i++) {
