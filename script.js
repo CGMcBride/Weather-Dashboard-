@@ -10,6 +10,8 @@ const oneDayLatitude = $(".lat");
 const oneDayLongitude = $(".lon");
 // set variables for the search button
 const searchButton = $("#search");
+// set the logic to setup local storage
+$(".dayOneForcast").val(localStorage.getWeather);
 // // set an array for the cities to display a list of the cities
 
 let city = ["Austin", "Houston", "Dallas", "San Marcos"];
