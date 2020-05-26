@@ -63,7 +63,7 @@ $(document).ready(() => {
 	let getWeather = function (x) {
 		$.ajax({
 			url:
-				"http://api.openweathermap.org/data/2.5/weather?q=" +
+				"https://api.openweathermap.org/data/2.5/weather?q=" +
 				x +
 				"&appid=" +
 				apiKey,
@@ -82,14 +82,14 @@ $(document).ready(() => {
 			let img = $("<img>")
 				.attr(
 					"src",
-					"http://openweathermap.org/img/w/" + res.weather[0].icon + ".png"
+					"https://openweathermap.org/img/w/" + res.weather[0].icon + ".png"
 				)
 				.attr("width", 100);
 			oneDayIcon.empty().append(img);
 
 			// getting UV info througu Lon and Let
 			$.ajax({
-				url: `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${res.coord.lat}&lon=${res.coord.lon}`,
+				url: `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${res.coord.lat}&lon=${res.coord.lon}`,
 				method: "GET",
 			}).then(function (res) {
 				oneDayUvindex.text("UV Index: " + res.value);
@@ -99,7 +99,7 @@ $(document).ready(() => {
 			// getting Five days forcast
 			$.ajax({
 				url:
-					"http://api.openweathermap.org/data/2.5/forecast?q=" +
+					"https://api.openweathermap.org/data/2.5/forecast?q=" +
 					x +
 					"&appid=" +
 					apiKey,
@@ -120,7 +120,7 @@ $(document).ready(() => {
 					let b = $("<img>")
 						.attr(
 							"src",
-							"http://openweathermap.org/img/w/" +
+							"https://openweathermap.org/img/w/" +
 								//passing x value
 								res.list[x].weather[0].icon +
 								".png"
