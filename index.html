@@ -37,7 +37,7 @@
                 <div class="bg-light px-5 pb-5">
                     <div class="oneDayForcast col-sm-9">
                         <h1 class="display-4">Day Forecast for <span class="city"></span></h1>
-                        <div class="weather"></div>
+                        <div><span class="weather"></span> <span class="icon"></span></div>
                         <!-- <div class="city"> City</div> -->
                         <div class="text-danger"> <span class="temp">Temp</span>˚F</div>
                         <div class="wind"> Wind</div>
@@ -46,17 +46,14 @@
                         <div class="lat"> UVindex</div>
                         <div class="UVindex">UVindex</div>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="icon"></div>
-                    </div>
                 </div>
                 <div class="row p-5">
                     <div class="fiveDayForcast">
-                        <h2 class="display-4">5 Day Forecast</h2>
+                        <h2 class="display-4 pb-3">5 Day Forecast</h2>
                         <!-- <div class="icon">
                             <canvas id="icon" width="128" height="128"></canvas>
                         </div> -->
-                        <div id="fivedayforecast"></div>
+                        <div id="fivedayforecast" class="row"></div>
                     </div>
                 </div>
             </div>

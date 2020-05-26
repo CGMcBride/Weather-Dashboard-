@@ -1,127 +1,157 @@
-// // set variables for the one day Forecast to get city info on page
-let dayOneForcast = "oneDayForcast";
-const oneDayCity = $(".city");
-const oneDayWind = $(".wind");
-const oneDayHumidity = $(".humidity");
-const oneDayTemp = $(".temp");
-const oneDayUvindex = $(".UVindex");
-const oneDayWeather = $(".weather");
-const oneDayLatitude = $(".lat");
-const oneDayLongitude = $(".lon");
-const oneDayIcon = $(".icon");
-const fiveDay = $(".fivedayforecast");
-// set variables for the search button
-const searchButton = $("#search");
-// set the logic to setup local storage
-// $(".dayOneForcast").val(localStorage.getWeather);
-// // set an array for the cities to display a list of the cities
+//  set up varialbles using boilerplate
+const oneDayCity = $(".city"),
+	oneDayWind = $(".wind"),
+	oneDayHumidity = $(".humidity"),
+	oneDayTemp = $(".temp"),
+	oneDayUvindex = $(".UVindex"),
+	oneDayWeather = $(".weather"),
+	oneDayLatitude = $(".lat"),
+	oneDayLongitude = $(".lon"),
+	oneDayIcon = $(".icon"),
+	citiesContainer = $("#cities"),
+	searchButton = $("#search"),
+	apiKey = "f7beb73a262bbf898ba7bef91aaf85e4";
 
 let city = ["Austin", "Houston", "Dallas", "San Marcos"];
-console.log(city);
-// localStorage.setItem("myCityKey", JSON.stringify(city));
 
-let getData = JSON.parse(localStorage.getItem("myCityKey"));
-console.log(getData);
+// document ready as a startup function to set everything once document loaded correctly
+$(document).ready(() => {
+	// First let's get the data stored at Local Storage
+	let getData = JSON.parse(localStorage.getItem("myCityKey"));
+	console.log(getData);
 
-// // set a var for the API key to get the weather information
-// let apiKey = "c3be44ab7db984ed86cde2a02725a631";
-// let openWeather =
-// 	"http://api.openweathermap.org/data/2.5/weather?appid='" +
-// 	apiKey +
-// 	"'&q='Austin'";
-
-const apiKey = "f7beb73a262bbf898ba7bef91aaf85e4";
-let weatherurl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-// call for the search button to activate the function to search other cities
-$(document).on("click", "#search", function () {
-	let newCity = $(".form-control").val();
-	console.log(newCity);
-	city.push(newCity);
-	console.log(city);
-	localStorage.setItem("myCityKey", JSON.stringify(city));
-	createButton();
-});
-// find the id and create a for loop for the button to find city and append on the empty div
-let createButton = function () {
-	$("#cities").empty();
-	getData = JSON.parse(localStorage.getItem("myCityKey"));
-	for (let i = 0; i < getData.length; i++) {
-		let cityName = $("<button></button>")
-			.addClass("searchWeather btn btn-dark btn-block")
-			.text(getData[i])
-			.val(getData[i]);
-		$("#cities").append(cityName);
+	// If there is nothing in Local Storage then you need to add city array as a starting cities to generate buttons
+	if (getData === null) {
+		localStorage.setItem("myCityKey", JSON.stringify(city));
+		getData = JSON.parse(localStorage.getItem("myCityKey"));
 	}
-};
-createButton();
 
-$(document).on("click", ".searchWeather", function () {
-	let x = $(this).val();
-	console.log(x);
-	getWeather(x);
-});
+	// If  search button Onclick, get the value out of input and add in Local Storage
+	$(document).on("click", "#search", function () {
+		// value of the search input
+		let newCity = $(".form-control").val();
+		// pushing this value into Local Storage array
+		getData.push(newCity);
+		// adding that into local storage
+		localStorage.setItem("myCityKey", JSON.stringify(getData));
+		// run create button to create that button
+		createButton();
+	});
 
-let getWeather = function (x) {
-	$.ajax({
-		url:
-			"http://api.openweathermap.org/data/2.5/weather?q=" +
-			x +
-			"&appid=" +
-			apiKey,
-		method: "GET",
-	}).then(function (res) {
-		console.log(res);
-		oneDayCity.text(res.name).addClass("text-danger");
-		oneDayWind.text("Wind: " + res.wind.speed);
-		oneDayHumidity.text("Humidity: " + res.main.humidity);
-		oneDayTemp.text(
-			"Current Temprature: " + Math.round((res.main.temp - 273.17) * 1.8 + 32)
-		);
-		oneDayWeather.text("Weather: " + res.weather[0].description);
-		oneDayLatitude.text("Latitude: " + res.coord.lat);
-		oneDayLongitude.text("Longitude:" + res.coord.lon);
-		let img = $("<img>").attr(
-			"src",
-			"http://openweathermap.org/img/w/" + res.weather[0].icon + ".png"
-		);
-		oneDayIcon.empty().append(img);
+	// Generate button through the Local Storage
+	const createButton = function () {
+		citiesContainer.empty();
+		for (let i = 0; i < getData.length; i++) {
+			let cityName = $("<button>")
+				.addClass("searchWeather btn btn-dark btn-block")
+				.text(getData[i])
+				.val(getData[i]);
+			citiesContainer.append(cityName);
+		}
+	};
+	// run create button function to genrate buttons
+	createButton();
+
+	// click any city button to generate name that needs to put into api
+	$(document).on("click", ".searchWeather", function () {
+		let x = $(this).val();
+		console.log(x);
+		getWeather(x);
+	});
+
+	// get weather through ajax
+	let getWeather = function (x) {
 		$.ajax({
-			url: `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${res.coord.lat}&lon=${res.coord.lon}`,
+			url:
+				"http://api.openweathermap.org/data/2.5/weather?q=" +
+				x +
+				"&appid=" +
+				apiKey,
 			method: "GET",
 		}).then(function (res) {
-			oneDayUvindex.text("UV Index: " + res.value);
 			console.log(res);
+			oneDayCity.text(res.name).addClass("text-danger");
+			oneDayWind.text("Wind: " + res.wind.speed);
+			oneDayHumidity.text("Humidity: " + res.main.humidity);
+			oneDayTemp.text(
+				"Current Temprature: " + Math.round((res.main.temp - 273.17) * 1.8 + 32)
+			);
+			oneDayWeather.text("Weather: " + res.weather[0].description);
+			oneDayLatitude.text("Latitude: " + res.coord.lat);
+			oneDayLongitude.text("Longitude:" + res.coord.lon);
+			let img = $("<img>")
+				.attr(
+					"src",
+					"http://openweathermap.org/img/w/" + res.weather[0].icon + ".png"
+				)
+				.attr("width", 100);
+			oneDayIcon.empty().append(img);
+
+			// getting UV info througu Lon and Let
+			$.ajax({
+				url: `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${res.coord.lat}&lon=${res.coord.lon}`,
+				method: "GET",
+			}).then(function (res) {
+				oneDayUvindex.text("UV Index: " + res.value);
+				console.log(res);
+			});
+
+			// getting Five days forcast
+			$.ajax({
+				url:
+					"http://api.openweathermap.org/data/2.5/forecast?q=" +
+					x +
+					"&appid=" +
+					apiKey,
+				method: "GET",
+			}).then(function (res) {
+				console.log(res);
+				$("#fivedayforecast").empty();
+				// weather dates are we want to show
+				//weatherDates[3] = 24
+				// we are going to pass this value as x in next function
+				const weatherDates = [0, 8, 16, 24, 32];
+
+				let dateBlock = function (x) {
+					let a = $("<div>")
+						.addClass("bg-info p-3 mr-3 text-dark")
+						.text(res.list[x].dt_txt.substring(0, 10));
+
+					let b = $("<img>")
+						.attr(
+							"src",
+							"http://openweathermap.org/img/w/" +
+								//passing x value
+								res.list[x].weather[0].icon +
+								".png"
+						)
+						.attr("width", 100);
+
+					let c = $("<p></p>")
+						.text(
+							// passing x value
+							Math.round((res.list[x].main.temp - 273.17) * 1.8 + 32) + "˚F"
+						)
+						.addClass("h3");
+
+					let d = $("<p></p>").text("Humidity: " + res.list[x].main.humidity);
+					// e is the empty div
+					let e = $("<div>");
+					e.append(a, b, c, d);
+					$("#fivedayforecast").append(e);
+				};
+
+				for (let index = 0; index < weatherDates.length; index++) {
+					//x = 24
+					//dateBlock(x) = dateBlock(24)
+					dateBlock(weatherDates[index]);
+				} //our date block is similar to our x we aenrt going to repeat
+			});
 		});
-	});
-	$.ajax({
-		url:
-			"http://api.openweathermap.org/data/2.5/forecast?q=" +
-			x +
-			"&appid=" +
-			apiKey,
-		method: "GET",
-	}).then(function (res) {
-		console.log(res);
-		console.log(res.list[0].dt_txt);
+	};
 
-		let a = $("<div></div>");
-		let b = $("<p></p>").text(res.list[0].dt_txt);
-		let c = $("<img />").attr(
-			"src",
-			"http://openweathermap.org/img/w/" + res.list[0].weather[0].icon + ".png"
-		);
-		let d = $("<p></p>").text(
-			Math.round((res.list[0].main.temp - 273.17) * 1.8 + 32)
-		);
-		let e = $("<p></p>").text(res.list[0].main.humidity);
-		a.append(b);
-		a.append(c);
-		a.append(d);
-		a.append(e);
-		fiveDay.append(a);
-		console.log(a);
+	// default weather Austin if no button clicked
+	getWeather("Austin");
 
-		let f = [0, 8, 16, 24, 32];
-	});
-};
-getWeather();
+	// End of document ready
+});
