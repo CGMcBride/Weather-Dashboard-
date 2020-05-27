@@ -29,9 +29,15 @@ $(document).ready(() => {
 	// If  search button Onclick, get the value out of input and add in Local Storage
 	$(document).on("click", "#search", function () {
 		// value of the search input
-		let newCity = $(".form-control").val();
+		let newCity = $(".form-control").val(); //you can use .toLower() to convert whatever value to lower case dEnver
 		// pushing this value into Local Storage array
-		getData.push(newCity);
+		//check if newCity is already in the array if it is => alert esle getData.push(newCity);
+		console.log(getData);
+		if (getData.indexOf(newCity) != -1) {
+			alert("This city is already listed.");
+		} else {
+			getData.push(newCity);
+		}
 		// adding that into local storage
 		localStorage.setItem("myCityKey", JSON.stringify(getData));
 		// run create button to create that button
@@ -42,10 +48,12 @@ $(document).ready(() => {
 	const createButton = function () {
 		citiesContainer.empty();
 		for (let i = 0; i < getData.length; i++) {
+			let phrase = getData[i];
+			const capitalStr = phrase.charAt(0).toUpperCase() + phrase.slice(1);
 			let cityName = $("<button>")
 				.addClass("searchWeather btn btn-dark btn-block")
-				.text(getData[i])
-				.val(getData[i]);
+				.text(capitalStr) //presentation on the page
+				.val(getData[i]); //not sure if you want to change that
 			citiesContainer.append(cityName);
 		}
 	};
